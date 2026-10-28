@@ -169,3 +169,4 @@ implements VOICEVOX's API works, e.g.
   `requirements.txt`. If your sync server rejects it as too new or too old,
   change the pin to the Anki version your server runs, then rebuild.
 # anki-audio-syncer
+# anki-audio-syncer
