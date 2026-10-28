@@ -1,0 +1,36 @@
+# Start the engine:   docker compose up -d
+# Run the script:     docker compose run --rm anki-audio-syncer --deck "My Japanese Deck"
+# Settings (sync server, credentials, voice) come from .env; see .env.example.
+
+services:
+  voicevox:
+    # Official VOICEVOX ENGINE, voice models included. For an NVIDIA GPU use
+    # voicevox/voicevox_engine:nvidia-0.25.2 and add `gpus: all`.
+    image: voicevox/voicevox_engine:cpu-0.25.2
+    ports:
+      # Localhost only: lets you browse http://127.0.0.1:50021/docs.
+      - "127.0.0.1:50021:50021"
+    restart: unless-stopped
+
+  anki-audio-syncer:
+    build: .
+    # Not started by `docker compose up`; run it on demand with `docker compose run`.
+    profiles: ["cli"]
+    depends_on:
+      - voicevox
+    environment:
+      VOICEVOX_URL: http://voicevox:50021
+      VOICEVOX_SPEAKER: ${VOICEVOX_SPEAKER:-}
+      ANKI_SYNC_URL: ${ANKI_SYNC_URL:-}
+      ANKI_USERNAME: ${ANKI_USERNAME:-}
+      ANKI_PASSWORD: ${ANKI_PASSWORD:-}
+    volumes:
+      # Local copy of the collection and its media, so later runs sync only changes.
+      - anki-audio-syncer-data:/data
+    extra_hosts:
+      # Lets ANKI_SYNC_URL use http://host.docker.internal:27701 if the sync
+      # server runs on the same machine.
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  anki-audio-syncer-data:

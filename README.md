@@ -122,7 +122,7 @@ running.
 
 ```bash
 pip install -r requirements.txt    # or: uv run anki-audio-syncer.py ...
-export ANKI_SYNC_URL=http://192.168.1.196:27701 ANKI_USERNAME=... ANKI_PASSWORD=...
+export ANKI_SYNC_URL=http://192.168.1.5:27701 ANKI_USERNAME=... ANKI_PASSWORD=...
 python anki-audio-syncer.py --deck "My Japanese Deck" --speaker 14
 ```
 
@@ -168,5 +168,4 @@ implements VOICEVOX's API works, e.g.
 - **Anki version.** The client is pinned to `anki==26.9.3` in
   `requirements.txt`. If your sync server rejects it as too new or too old,
   change the pin to the Anki version your server runs, then rebuild.
-# anki-audio-syncer
 # anki-audio-syncer
